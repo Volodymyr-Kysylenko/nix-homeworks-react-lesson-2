@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завдання 5</title>
+    <style>
+        @font-face {
+            font-family: "Digital";
+            src: url("./fonts/digital.ttf");
+        }
+
+        #app {
+            display: flex;
+            justify-content: center;
+            margin-top: 36px;
+        }
+        
+        .clock {
+            display: flex;
+            justify-content: center;
+            flex-flow: column nowrap;
+            max-width: 360px;
+            padding: 24px;
+            background-color: silver;
+            box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.5);
+            font-family: "Digital";
+        }
+
+        .digits {
+            display: flex;
+            justify-content: center;
+            width: 300px;
+            padding: 24px;
+            margin: 0;
+            background-color: black;
+            color: darkgreen;
+            font-size: 72px;
+            text-shadow: 1px 1px 20px rgba(0, 123, 0, 0.6);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            width: 348px;
+            margin: 12px 0 0;
+        }
+
+        .buttons > button {
+            width: 130px;
+            padding: 8px;
+            border: unset;
+            margin: 0 12px;
+            background-color: rgb(100, 100, 100);
+            box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-family: "Digital";
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            cursor: pointer;
+        }
+
+        .buttons > button:active {
+            background-color: rgb(90, 90, 90);
+            box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const rootNode = document.getElementById('app');
+        const root = ReactDOM.createRoot(rootNode);
+
+        function getTime() {
+            return new Date().toLocaleTimeString([], { hour12: false });
+        }
+
+        class Clock extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { date: getTime() };
+                this.start = this.start.bind(this);
+                this.stop = this.stop.bind(this);
+            }
+
+            componentDidMount() {
+                this.start();
+            }
+
+            start() {
+                this.setState({ date: getTime() });
+                this.timerID = setInterval(() => this.tick(), 1000);
+            }
+
+            stop() {
+                clearInterval(this.timerID);
+            }
+
+            tick() {
+                this.setState({ date: getTime() });
+            }
+
+            render() {
+                return (
+                    <div className = 'clock'>
+                        <h2 className = 'digits'>{ this.state.date }</h2>
+                        <div className = 'buttons'>
+                            <button onClick = { this.stop }>Stop</button>
+                            <button onClick = { this.start }>Continue</button>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        root.render(<Clock />);
+    </script>
+</body>
+
+</html>
